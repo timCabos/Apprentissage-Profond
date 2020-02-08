@@ -1,6 +1,5 @@
 
 import pygame
-#import scipy
 pygame.init()
 
 #windowdowverture de la fenetre du jeu
@@ -21,14 +20,15 @@ p_2 = pygame.image.load('sprites/p_2.png')
 #Parametres du jeu
 
 run = True                                                      #Jeu en cours
-
 delay = 20                                                      #Pas de temps du jeu (en ms)
 radius = 16                                                     #Rayon du personnage
 speed = 4                                                       #Vitesse du personnage
 cooldown_delay = 500                                            #Temps de rechargement (en ms)
-cooldown = 0                                                    #Disponibilite du tir
+cooldown_p1 = 0                                                 #Disponibilite du tir
+cooldown_p2 = 0
 max_bullet = 10                                                 #Nombre maximum de tirs
-bullets = [[0 for i in range(5)] for i in range(max_bullet)]    #Tableau des tirs emis : (Exist?, x, y, x_speed, y_speed)
+bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]  #Tableau des tirs emis : (Exist?, x, y, x_speed, y_speed)
+bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
 bullet_speed = 12                                               #Vitesse des tirs
 bullet_radius = 4
 
@@ -63,58 +63,88 @@ while run:
     if keys[pygame.K_DOWN]:
         y_p1 += speed
 
-
-    if keys[pygame.K_1]:
+    if keys[pygame.K_j]:
         x_p2 -= speed
 
-    if keys[pygame.K_2]:
+    if keys[pygame.K_l]:
         x_p2 += speed
 
-    if keys[pygame.K_3]:
+    if keys[pygame.K_i]:
         y_p2 -= speed
 
-    if keys[pygame.K_4]:
+    if keys[pygame.K_k]:
         y_p2 += speed
 
-#Test du tir
+#Test du tir du joueur 1
 
-    if cooldown < 0:
+    if cooldown_p1 < 0:
         if keys[pygame.K_q] or keys[pygame.K_d] or keys[pygame.K_z] or keys[pygame.K_s]:
             i = 0
-            while bullets[i][0] :
+            while bullets_p1[i][0] :
                 i += 1
-            bullets[i][0] = 1
-            bullets[i][1] = x_p1
-            bullets[i][2] = y_p1
-            bullets[i][3] = 0
-            bullets[i][4] = 0
+            bullets_p1[i][0] = 1
+            bullets_p1[i][1] = x_p1
+            bullets_p1[i][2] = y_p1
+            bullets_p1[i][3] = 0
+            bullets_p1[i][4] = 0
             if keys[pygame.K_q]:
-                bullets[i][3] = -bullet_speed
+                bullets_p1[i][3] = -bullet_speed
             if keys[pygame.K_d]:
-                bullets[i][3] = bullet_speed
+                bullets_p1[i][3] = bullet_speed
             if keys[pygame.K_z]:
-                bullets[i][4] = -bullet_speed
+                bullets_p1[i][4] = -bullet_speed
             if keys[pygame.K_s]:
-                bullets[i][4] = bullet_speed
-            cooldown = cooldown_delay
+                bullets_p1[i][4] = bullet_speed
+            cooldown_p1 = cooldown_delay
 
-    if cooldown >= 0:
-        cooldown -= delay
+    if cooldown_p1 >= 0:
+        cooldown_p1 -= delay
 
+#Test du tir du joueur 2
+
+    if cooldown_p2 < 0:
+        if keys[pygame.K_f] or keys[pygame.K_h] or keys[pygame.K_t] or keys[pygame.K_g]:
+            i = 0
+            while bullets_p2[i][0] :
+                i += 1
+            bullets_p2[i][0] = 1
+            bullets_p2[i][1] = x_p2
+            bullets_p2[i][2] = y_p2
+            bullets_p2[i][3] = 0
+            bullets_p2[i][4] = 0
+            if keys[pygame.K_f]:
+                bullets_p2[i][3] = -bullet_speed
+            if keys[pygame.K_h]:
+                bullets_p2[i][3] = bullet_speed
+            if keys[pygame.K_t]:
+                bullets_p2[i][4] = -bullet_speed
+            if keys[pygame.K_g]:
+                bullets_p2[i][4] = bullet_speed
+            cooldown_p2 = cooldown_delay
+
+    if cooldown_p2 >= 0:
+        cooldown_p2 -= delay
 
 #Affichages
     windowdow.blit(background, (0,0))
     windowdow.blit(p_1, (x_p1, y_p1, largeur, hauteur))
     windowdow.blit(p_2, (x_p2, y_p2, largeur, hauteur))
 
+    for i in range(max_bullet):
+        if bullets_p1[i][0]:
+            bullets_p1[i][1] += bullets_p1[i][3]
+            bullets_p1[i][2] += bullets_p1[i][4]
+            pygame.draw.circle(windowdow, (255, 0, 0), (bullets_p1[i][1],bullets_p1[i][2]), bullet_radius, 0)
+            if bullets_p1[i][1] > 800 or bullets_p1[i][1] < 0 or bullets_p1[i][2] > 800 or bullets_p1[i][2] < 0 :
+                bullets_p1[i][0] = False
 
     for i in range(max_bullet):
-        if bullets[i][0]:
-            bullets[i][1] += bullets[i][3]
-            bullets[i][2] += bullets[i][4]
-            pygame.draw.circle(windowdow, (255, 0, 0), (bullets[i][1],bullets[i][2]), bullet_radius, 0)
-            if bullets[i][1] > 800 or bullets[i][1] < 0 or bullets[i][2] > 800 or bullets[i][2] < 0 :
-                bullets[i][0] = False
+        if bullets_p2[i][0]:
+            bullets_p2[i][1] += bullets_p2[i][3]
+            bullets_p2[i][2] += bullets_p2[i][4]
+            pygame.draw.circle(windowdow, (0, 255, 0), (bullets_p2[i][1],bullets_p2[i][2]), bullet_radius, 0)
+            if bullets_p2[i][1] > 800 or bullets_p2[i][1] < 0 or bullets_p2[i][2] > 800 or bullets_p2[i][2] < 0 :
+                bullets_p2[i][0] = False
 
     pygame.display.update()
 
