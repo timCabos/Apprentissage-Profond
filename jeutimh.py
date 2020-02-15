@@ -10,8 +10,8 @@ pygame.display.set_caption("Deep Learning")
 
 #Images
 
-largeur = 65
-hauteur = 65
+width = 65
+height = 65
 
 background = pygame.image.load('sprites/bg.png')
 p_1 = pygame.image.load('sprites/p_1.png')
@@ -37,6 +37,7 @@ x_p1 = 50
 y_p1 = 400
 x_p2 = 750
 y_p2 = 400
+
 #Boucle principale
 
 while run:
@@ -127,8 +128,8 @@ while run:
 
 #Affichages
     windowdow.blit(background, (0,0))
-    windowdow.blit(p_1, (x_p1, y_p1, largeur, hauteur))
-    windowdow.blit(p_2, (x_p2, y_p2, largeur, hauteur))
+    windowdow.blit(p_1, (x_p1, y_p1, width, height))
+    windowdow.blit(p_2, (x_p2, y_p2, width, height))
 
     for i in range(max_bullet):
         if bullets_p1[i][0]:
