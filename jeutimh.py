@@ -134,6 +134,8 @@ while run:
     windowdow.blit(p_1, (x_p1, y_p1, width, height))
     windowdow.blit(p_2, (x_p2, y_p2, width, height))
 
+
+# Bagarre et fin du jeu lorsqu'un des joueurs n'a plus de vie
     for i in range(max_bullet):
         if bullets_p1[i][0]:
             bullets_p1[i][1] += bullets_p1[i][3]
@@ -141,6 +143,8 @@ while run:
             if abs(bullets_p1[i][1] - x_p2) < bullet_radius and abs(bullets_p1[i][2] - y_p2) < bullet_radius :
                 bullets_p1[i] = [0 for j in range(5)]
                 life_p2 -= 1
+                if life_p2 == 0 :
+                    run = False
             pygame.draw.circle(windowdow, (255, 0, 0), (bullets_p1[i][1],bullets_p1[i][2]), bullet_radius, 0)
             if bullets_p1[i][1] > 800 or bullets_p1[i][1] < 0 or bullets_p1[i][2] > 800 or bullets_p1[i][2] < 0 :
                 bullets_p1[i][0] = False
@@ -152,12 +156,11 @@ while run:
             if abs(bullets_p2[i][1] - x_p1) < bullet_radius and abs(bullets_p2[i][2] - y_p1) < bullet_radius :
                 bullets_p2[i] = [0 for j in range(5)]
                 life_p1 -= 1
+                if life_p1 == 0 :
+                    run = False
             pygame.draw.circle(windowdow, (0, 255, 0), (bullets_p2[i][1],bullets_p2[i][2]), bullet_radius, 0)
             if bullets_p2[i][1] > 800 or bullets_p2[i][1] < 0 or bullets_p2[i][2] > 800 or bullets_p2[i][2] < 0 :
                 bullets_p2[i][0] = False
 
-# fin du jeu lorsqu'un des joueurs n'a plus de vie
-    if life_p1 or life_p2 = 0
-        run = False
     pygame.display.update()
 pygame.quit()
