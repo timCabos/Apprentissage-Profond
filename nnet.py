@@ -3,6 +3,8 @@ import scipy.special
 
 class Nnet:
 
+    mutation_rate = 0.05
+
     def __init__(self, num_input, num_hidden_1, num_hidden_2 , num_hidden_3, num_output):
         self.num_input = num_input
         self.num_hidden_1 = num_hidden_1
@@ -26,3 +28,12 @@ class Nnet:
         final_inputs = np.dot(self.weight_hidden3_output, hidden3_outputs)
         final_outputs = self.activation_function(final_inputs)
         return final_outputs
+
+        def breed(self, nn):
+            #Fonction de breed
+            return child
+
+        def mutate(self):
+            for x in np.nditer(self, op_flags=["readwrite"]):
+                if random.random() < mutation_rate:
+                    #Suite

@@ -6,7 +6,7 @@ from prepareData import *
 pygame.init()
 
 #windowverture de la fenetre du jeu
-window = pygame.display.set_mode((800, 800))
+window = pygame.display.set_mode((window_length, window_height))
 
 pygame.display.set_caption("Deep Learning")
 
@@ -17,16 +17,28 @@ p_2 = pygame.image.load('sprites/p_2.png')
 
 
 #Definition nnet
-nnet=Nnet(46,60,30,16,8)
+nb_input = 46
+nb_hidden1 = 60
+nb_hidden2 = 30
+nb_hidden3 = 16
+nb_output = 8
+
+nb_tank = 5
+nnet_tab=[Nnet(nb_input, nb_hidden1, nb_hidden2, nb_hidden3, nb_output) for i in range(nb_tank)]
+score_tab=[0 for i in range(nb_tank)]
+
+playing_tank = 0
+game_duration = 30000
+time = 0
 
 #Boucle principale
 while game < game_max:
 
     input = data(x_p1,x_p2,y_p1,y_p2,life_p1,life_p2,bullets_p1,bullets_p2)
-    output=nnet.get_outputs(input)
-    print(output[5][0], output[0][0])
+    output=nnets[playing_tank].get_outputs(input)
 
     pygame.time.delay(delay)
+    time += delay
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -39,25 +51,25 @@ while game < game_max:
     if output[0][0]>0.5 and x_p1>0:
         x_p1 -= speed
 
-    if output[1][0]>0.5 and x_p1<750:
+    if output[1][0]>0.5 and x_p1<window_length - width:
         x_p1 += speed
 
     if output[2][0]>0.5 and y_p1>0:
         y_p1 -= speed
 
-    if output[3][0]>0.5 and y_p1<0:
+    if output[3][0]>0.5 and y_p1< window_height - height:
         y_p1 += speed
 
-    if keys[pygame.K_j]:
+    if keys[pygame.K_j] and x_p2>0:
         x_p2 -= speed
 
-    if keys[pygame.K_l]:
+    if keys[pygame.K_l] and x_p2<window_length - width:
         x_p2 += speed
 
-    if keys[pygame.K_i]:
+    if keys[pygame.K_i] and y_p2>0:
         y_p2 -= speed
 
-    if keys[pygame.K_k]:
+    if keys[pygame.K_k] and y_p2< window_height - height:
         y_p2 += speed
 
 # Test du tir du joueur 1
@@ -125,9 +137,11 @@ while game < game_max:
                 bullets_p1[i] = [0 for j in range(5)]
                 life_p2 -= 1
                 if life_p2 == 0 :
+                    playing_tank = (playing_tank + 1)
                     game += 1
-                    score = life_p1/life_tot
+                    score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
                     print(score)
+                    score_tab[playing_tank]=score
                     life_p1 = life_tot
                     life_p2 = life_tot
                     x_p1 = 400
@@ -136,6 +150,7 @@ while game < game_max:
                     y_p2 = 400
                     bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]
                     bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
+                    time=0
 
             pygame.draw.circle(window, (255, 0, 0), (bullets_p1[i][1],bullets_p1[i][2]), bullet_radius, 0)
             if bullets_p1[i][1] > 800 or bullets_p1[i][1] < 0 or bullets_p1[i][2] > 800 or bullets_p1[i][2] < 0 :
@@ -149,9 +164,11 @@ while game < game_max:
                 bullets_p2[i] = [0 for j in range(5)]
                 life_p1 -= 1
                 if life_p1 == 0 :
+                    playing_tank = (playing_tank + 1)
                     game += 1
-                    score = -life_p2/life_tot
+                    score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
                     print(score)
+                    score_tab[playing_tank]=score
                     life_p1 = life_tot
                     life_p2 = life_tot
                     x_p1 = 400
@@ -160,10 +177,31 @@ while game < game_max:
                     y_p2 = 400
                     bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]
                     bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
+                    time=0
 
             pygame.draw.circle(window, (0, 255, 0), (bullets_p2[i][1],bullets_p2[i][2]), bullet_radius, 0)
             if bullets_p2[i][1] > 800 or bullets_p2[i][1] < 0 or bullets_p2[i][2] > 800 or bullets_p2[i][2] < 0 :
                 bullets_p2[i][0] = False
+
+    if time > game_duration :
+        game += 1
+        playing_tank = (playing_tank + 1)
+        score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
+        print(score)
+        score_tab[playing_tank]=score
+        life_p1 = life_tot
+        life_p2 = life_tot
+        x_p1 = 400
+        y_p1 = 400
+        x_p2 = 750
+        y_p2 = 400
+        bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]
+        bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
+        time=0
+
+    if playing_tank == nb_tank :
+
+
 
     pygame.display.update()
 pygame.quit()

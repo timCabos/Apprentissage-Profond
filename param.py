@@ -1,4 +1,6 @@
 #parametres Jeu
+window_height = 800
+window_length = 800
 width = 65
 height = 65
 
