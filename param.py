@@ -25,3 +25,7 @@ x_p1 = 400
 y_p1 = 400
 x_p2 = 750
 y_p2 = 400
+
+# Paramètre NN
+
+activ=0.5
