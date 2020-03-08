@@ -19,7 +19,9 @@ p_2 = pygame.image.load('sprites/p_2.png')
 
 #Parametres du jeu
 
-run = True                                                      #Jeu en cours
+#run = True                                                      #Jeu en cours
+game_max = 5                                                    #nombre de parties qui seront jouees
+game = 0                                                        #nombre de parties jouees
 delay = 20                                                      #Pas de temps du jeu (en ms)
 radius = 16                                                     #Rayon du personnage
 speed = 6                                                       #Vitesse du personnage
@@ -41,15 +43,17 @@ y_p1 = 400
 x_p2 = 750
 y_p2 = 400
 
+
+
 #Boucle principale
 
-while run:
+while game < game_max:
 
     pygame.time.delay(delay)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            game = game_max
 
     keys = pygame.key.get_pressed()
 
@@ -144,7 +148,18 @@ while run:
                 bullets_p1[i] = [0 for j in range(5)]
                 life_p2 -= 1
                 if life_p2 == 0 :
-                    run = False
+                    game += 1
+                    score = life_p1/life_tot
+                    print(score)
+                    life_p1 = life_tot
+                    life_p2 = life_tot
+                    x_p1 = 50
+                    y_p1 = 400
+                    x_p2 = 750
+                    y_p2 = 400
+                    bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]
+                    bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
+
             pygame.draw.circle(windowdow, (255, 0, 0), (bullets_p1[i][1],bullets_p1[i][2]), bullet_radius, 0)
             if bullets_p1[i][1] > 800 or bullets_p1[i][1] < 0 or bullets_p1[i][2] > 800 or bullets_p1[i][2] < 0 :
                 bullets_p1[i][0] = False
@@ -157,7 +172,18 @@ while run:
                 bullets_p2[i] = [0 for j in range(5)]
                 life_p1 -= 1
                 if life_p1 == 0 :
-                    run = False
+                    game += 1
+                    score = -life_p2/life_tot
+                    print(score)
+                    life_p1 = life_tot
+                    life_p2 = life_tot
+                    x_p1 = 50
+                    y_p1 = 400
+                    x_p2 = 750
+                    y_p2 = 400
+                    bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]
+                    bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
+
             pygame.draw.circle(windowdow, (0, 255, 0), (bullets_p2[i][1],bullets_p2[i][2]), bullet_radius, 0)
             if bullets_p2[i][1] > 800 or bullets_p2[i][1] < 0 or bullets_p2[i][2] > 800 or bullets_p2[i][2] < 0 :
                 bullets_p2[i][0] = False
