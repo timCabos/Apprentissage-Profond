@@ -18,9 +18,6 @@ class Nnet:
         self.weight_hidden2_hidden3 = np.random.uniform(-0.5, 0.5, size=(self.num_hidden_3, self.num_hidden_2))
         self.weight_hidden3_output = np.random.uniform(-0.5, 0.5, size=(self.num_output, self.num_hidden_3))
         self.activation_function = lambda x: scipy.special.expit(x)
-        for i in range (1, 3):
-            weights = append.weight_input_hidden"i"
-
 
     def get_outputs(self, inputs_list):
         inputs = np.array(inputs_list, ndmin=2).T
