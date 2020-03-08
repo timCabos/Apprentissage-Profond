@@ -23,13 +23,15 @@ nb_hidden2 = 30
 nb_hidden3 = 16
 nb_output = 8
 
-nb_tank = 3 
+nb_tank = 5
 nnet_tab=[Nnet(nb_input, nb_hidden1, nb_hidden2, nb_hidden3, nb_output) for i in range(nb_tank)]
 score_tab=[0 for i in range(nb_tank)]
 
 playing_tank = 0
 game_duration = 15000
 time = 0
+
+print(nnet_tab[0].weight_input_hidden1)
 
 #Boucle principale
 while game < game_max:
@@ -141,7 +143,7 @@ while game < game_max:
                     score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
                     print(score)
                     score_tab[playing_tank]=score
-                    playing_tank = (playing_tank + 1) % nb_tank
+                    playing_tank = (playing_tank + 1)
                     life_p1 = life_tot
                     life_p2 = life_tot
                     x_p1 = 400
@@ -168,7 +170,7 @@ while game < game_max:
                     score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
                     print(score)
                     score_tab[playing_tank]=score
-                    playing_tank = (playing_tank + 1) % nb_tank
+                    playing_tank = (playing_tank + 1)
                     life_p1 = life_tot
                     life_p2 = life_tot
                     x_p1 = 400
@@ -188,7 +190,7 @@ while game < game_max:
         score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
         print(score)
         score_tab[playing_tank]=score
-        playing_tank = (playing_tank + 1) % nb_tank
+        playing_tank = (playing_tank + 1)
         life_p1 = life_tot
         life_p2 = life_tot
         x_p1 = 400
@@ -198,6 +200,14 @@ while game < game_max:
         bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]
         bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
         time=0
+
+    if playing_tank == nb_tank :
+        playing_tank = 0
+        good_nn, bad_nn = darwin(nnet_tab, score_tab)
+        bad_nn = sort_bad(bad_nn)
+        child1 = breed(good_nn[0], good_nn[1])
+        child2 = breed(good_nn[0], good_nn[1])
+        nnet_tab = [good_nn[0], good_nn[1], bad_nn[0], child1, child2]
 
     pygame.display.update()
 pygame.quit()

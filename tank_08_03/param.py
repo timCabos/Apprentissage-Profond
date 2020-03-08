@@ -5,12 +5,12 @@ width = 65
 height = 65
 
 #run = True                                                      #Jeu en cours
-game_max = 10                                                    #nombre de parties qui seront jouees
+game_max = 50                                                    #nombre de parties qui seront jouees
 game = 0                                                        #nombre de parties jouees
-delay = 20                                                      #Pas de temps du jeu (en ms)
+delay = 15                                                      #Pas de temps du jeu (en ms)
 radius = 16                                                     #Rayon du personnage
 speed = 6                                                       #Vitesse du personnage
-cooldown_delay = 300                                            #Temps de rechargement (en ms)
+cooldown_delay = 200                                            #Temps de rechargement (en ms)
 cooldown_p1 = 0                                                 #Disponibilite du tir
 cooldown_p2 = 0
 max_bullet = 4                                                #Nombre maximum de tirs

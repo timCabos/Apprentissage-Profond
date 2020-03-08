@@ -30,31 +30,41 @@ class Nnet:
         final_outputs = self.activation_function(final_inputs)
         return final_outputs
 
+    def mutate(tab):
+        for x in np.nditer(tab, op_flags=["readwrite"]):
+            if random.random() < mutation_chance :
+                x[...] = np.random.random_sample() - 0.5
 
+    def modify_weights(self):
+        Nnet.mutate(self.weight_input_hidden1)
+        Nnet.mutate(self.weight_hidden1_hidden2)
+        Nnet.mutate(self.weight_hidden2_hidden3)
+        Nnet.mutate(self.weight_hidden3_output)
 
 #GENERATIONS OF NEURAL NETWORKS
-def darwin(tab, score):                    #Selection function , split list in good and bad
+def darwin(tab, score):                     #Selection function , split list in good and bad
     max_1=score.index(max(score))
     score[max_1]=0
     max_2=score.index(max(score))
-    good_boys=[tab(max_1),tab(max_2)]
-    del tab[max_1:max_2]                # Delete good ones
+    good_boys=[tab[max_1],tab[max_2]]
+    del tab[max_1:max_2]                    # Delete good ones
     bad_boys=tab
     return good_boys , bad_boys
 
-
-
 def breed(nn1, nn2):                            #breeding function , random weights from each neural net selected
-    num_rows = nn1.shape[0]
-    num_cols = nn2.shape[1]
     child = nn1
-    for i in range(0, num_rows):
-        for j in range(0, num_cols):
-            if random.random() < 0.5 :
-                child[i][j] = nn2[i][j]
+    weights_child = [child.weight_input_hidden1, child.weight_hidden1_hidden2, child.weight_hidden2_hidden3, child.weight_hidden3_output]
+    weights_nn2 = [nn2.weight_input_hidden1, nn2.weight_hidden1_hidden2, nn2.weight_hidden2_hidden3, nn2.weight_hidden3_output]
+    for matrix in range(len(weights_child)):
+        for i in range(np.shape(weights_child[matrix])[0]):
+            for j in range(np.shape(weights_child[matrix])[1]):
+                if random.random() < 0.5:
+                    weights_child[matrix][i][j] = weights_nn2[matrix][i][j]
     return child
 
-def mutate(tab):
-    for x in np.nditer(tab, op_flags=["readwrite"]):
-        if random.random() < mutation_chance :
-            x[...] = np.random.random_sample() - 0.5
+def sort_bad(bad_boys):
+    del bad_boys[random.randint(0,len(bad_boys)-1)]
+    del bad_boys[random.randint(0,len(bad_boys)-1)]
+    for i in range(len(bad_boys)):
+        bad_boys[i].modify_weights()
+    return bad_boys
