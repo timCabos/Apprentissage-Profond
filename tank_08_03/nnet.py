@@ -30,7 +30,21 @@ class Nnet:
         final_outputs = self.activation_function(final_inputs)
         return final_outputs
 
-def breed(nn1, nn2):
+
+
+#GENERATIONS OF NEURAL NETWORKS
+def darwin(tab, score):                    #Selection function , split list in good and bad
+    max_1=score.index(max(score))
+    score[max_1]=0
+    max_2=score.index(max(score))
+    good_boys=[tab(max_1),tab(max_2)]
+    del tab[max_1:max_2]                # Delete good ones
+    bad_boys=tab
+    return good_boys , bad_boys
+
+
+
+def breed(nn1, nn2):                            #breeding function , random weights from each neural net selected
     num_rows = nn1.shape[0]
     num_cols = nn2.shape[1]
     child = nn1
