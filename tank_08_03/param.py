@@ -30,10 +30,10 @@ y_p2 = 500
 
 # Paramètre NN
 nb_input = 46
-nb_hidden1 = 50
-nb_hidden2 = 20
-nb_hidden3 = 12
+nb_hidden1 = 58
+nb_hidden2 = 29
+nb_hidden3 = 13
 nb_output = 8
 
-activ=0.7
+activ = 0.85
 mutation_chance = 0.1

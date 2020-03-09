@@ -26,8 +26,11 @@ playing_tank = 0
 game_duration = 1500
 time = 0
 
+generation = 0
+
 #Boucle principale
 while game < game_max:
+
 
     input = data(x_p1,x_p2,y_p1,y_p2,life_p1,life_p2,bullets_p1,bullets_p2)
     output1=nnet_tab1[playing_tank].get_outputs(input)
@@ -44,34 +47,29 @@ while game < game_max:
 
 #Test des deplacements
 
-    if output1[0][0]>0.5 and x_p1>0:
+    if output1[0][0]>activ and x_p1>0:
         x_p1 -= speed
-
-    if output1[1][0]>0.5 and x_p1<window_length - width:
+    if output1[1][0]>activ and x_p1<window_length - width:
         x_p1 += speed
-
-    if output1[2][0]>0.5 and y_p1>0:
+    if output1[2][0]>activ and y_p1>0:
         y_p1 -= speed
-
-    if output1[3][0]>0.5 and y_p1< window_height - height:
+    if output1[3][0]>activ and y_p1< window_height - height:
         y_p1 += speed
 
-    if output2[0][0]>0.5 and x_p2>0:
-        x_p2 -= speed
 
-    if output2[1][0]>0.5 and x_p2<window_length - width:
-        x_p2 += speed
-
-    if output2[2][0]>0.5 and y_p2>0:
-        y_p2 -= speed
-
-    if output2[3][0]>0.5 and y_p2< window_height - height:
-        y_p2 += speed
+    #if output2[0][0]>activ and x_p2>0:
+    #    x_p2 -= speed
+    #if output2[1][0]>activ and x_p2<window_length - width:
+    #    x_p2 += speed
+    #if output2[2][0]>activ and y_p2>0:
+    #    y_p2 -= speed
+    #if output2[3][0]>activ and y_p2< window_height - height:
+    #    y_p2 += speed
 
 # Test du tir du joueur 1
 
     if cooldown_p1 < 0:
-        if output1[4][0]>0.5 or output1[5][0]>0.5 or output1[6][0]>0.5 or output1[7][0]>0.5 :
+        if output1[4][0]>activ or output1[5][0]>activ or output1[6][0]>activ or output1[7][0]>activ :
             i = 0
             while bullets_p1[i][0] :
                 i += 1
@@ -80,13 +78,13 @@ while game < game_max:
             bullets_p1[i][2] = y_p1
             bullets_p1[i][3] = 0
             bullets_p1[i][4] = 0
-            if output1[4][0]>0.5 :
+            if output1[4][0]>activ :
                 bullets_p1[i][3] = -bullet_speed
-            if output1[5][0]>0.5 :
+            if output1[5][0]>activ :
                 bullets_p1[i][3] = bullet_speed
-            if output1[6][0]>0.5 :
+            if output1[6][0]>activ :
                 bullets_p1[i][4] = -bullet_speed
-            if output1[7][0]>0.5 :
+            if output1[7][0]>activ :
                 bullets_p1[i][4] = bullet_speed
             cooldown_p1 = cooldown_delay
 
@@ -96,7 +94,7 @@ while game < game_max:
 #Test du tir du joueur 2
 
     if cooldown_p2 < 0:
-        if output2[4][0]>0.5 or output2[5][0]>0.5 or output2[6][0]>0.5 or output2[7][0]>0.5 :
+        if output2[4][0]>activ or output2[5][0]>activ or output2[6][0]>activ or output2[7][0]>activ :
             i = 0
             while bullets_p2[i][0] :
                 i += 1
@@ -105,13 +103,13 @@ while game < game_max:
             bullets_p2[i][2] = y_p2
             bullets_p2[i][3] = 0
             bullets_p2[i][4] = 0
-            if output2[4][0]>0.5 :
+            if output2[4][0]>activ :
                 bullets_p2[i][3] = -bullet_speed
-            if output2[5][0]>0.5 :
+            if output2[5][0]>activ :
                 bullets_p2[i][3] = bullet_speed
-            if output2[6][0]>0.5 :
+            if output2[6][0]>activ :
                 bullets_p2[i][4] = -bullet_speed
-            if output2[7][0]>0.5 :
+            if output2[7][0]>activ :
                 bullets_p2[i][4] = bullet_speed
             cooldown_p2 = cooldown_delay
 
@@ -199,6 +197,8 @@ while game < game_max:
         time=0
 
     if playing_tank == nb_tank :
+        generation += 1
+        print(str(generation) + "ème GENERATION")
         playing_tank = 0
         print(score_tab1)
         good_nn1, bad_nn1 = darwin(nnet_tab1, score_tab1)
@@ -210,5 +210,8 @@ while game < game_max:
         nnet_tab1 = [good_nn1[0], good_nn1[1], bad_nn1[0], bad_nn1[1], child1]
         nnet_tab2 = [good_nn2[0], good_nn2[1], bad_nn2[0], bad_nn2[1], child2]
         random.shuffle(nnet_tab1)
+
+
+
     pygame.display.update()
 pygame.quit()
