@@ -23,17 +23,17 @@ life_p1 = life_tot
 life_p2 = life_tot
 
 #Position initiale des joueurs
-x_p1 = 400
-y_p1 = 400
-x_p2 = 750
-y_p2 = 400
+x_p1 = 200
+y_p1 = 300
+x_p2 = 600
+y_p2 = 500
 
 # Paramètre NN
 nb_input = 46
-nb_hidden1 = 60
-nb_hidden2 = 30
-nb_hidden3 = 16
+nb_hidden1 = 50
+nb_hidden2 = 20
+nb_hidden3 = 12
 nb_output = 8
 
-activ=0.5
-mutation_chance = 0.3
+activ=0.7
+mutation_chance = 0.1
