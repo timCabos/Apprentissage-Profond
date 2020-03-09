@@ -209,5 +209,6 @@ while game < game_max:
         child2 = breed(good_nn2[0], good_nn2[1])
         nnet_tab1 = [good_nn1[0], good_nn1[1], bad_nn1[0], bad_nn1[1], child1]
         nnet_tab2 = [good_nn2[0], good_nn2[1], bad_nn2[0], bad_nn2[1], child2]
+        random.shuffle(nnet_tab1)
     pygame.display.update()
 pygame.quit()
