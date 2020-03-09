@@ -1,4 +1,4 @@
-
+import os
 import numpy as np
 import scipy.special
 import random
@@ -74,3 +74,19 @@ def sort_bad(bad_boys):
     for i in range(len(bad_boys)):
         bad_boys[i].modify_weights()
     return bad_boys
+
+def save_nnet(tab,name):
+    file=str(name)+".txt"
+    f=open(name,w+)
+    f.write(tab[0].num_input , tab[0].num_hidden_1 , tab[0].num_hidden_2, tab[0].num_hidden_3, tab[0].num_output)
+    for i in range(len(tab)) :
+        f.write("nnet_tab1 %d \n" %i)
+        f.write(tab[i].weight_input_hidden1)
+        f.write("\n")
+        f.write(tab[i].weight_hidden1_hidden2)
+        f.write("\n")
+        f.write(tab[i].weight_hidden2_hidden3)
+        f.write("\n")
+        f.write(tab[i].weight_hidden3_output)
+        f.write("\n")
+    f.close()

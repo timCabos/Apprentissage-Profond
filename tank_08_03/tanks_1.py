@@ -215,3 +215,6 @@ while game < game_max:
 
     pygame.display.update()
 pygame.quit()
+
+save_nnet(nnet_tab1,"nnet1")
+save_nnet(nnet_tab2,"nnet2")

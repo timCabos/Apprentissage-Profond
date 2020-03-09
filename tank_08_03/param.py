@@ -30,8 +30,8 @@ y_p2 = 500
 
 # Paramètre NN
 nb_input = 46
-nb_hidden1 = 58
-nb_hidden2 = 29
+nb_hidden1 = 25
+nb_hidden2 = 18
 nb_hidden3 = 13
 nb_output = 8
 
