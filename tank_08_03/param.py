@@ -5,7 +5,7 @@ width = 65
 height = 65
 
 #run = True                                                      #Jeu en cours
-game_max = 50                                                    #nombre de parties qui seront jouees
+game_max = 100                                                    #nombre de parties qui seront jouees
 game = 0                                                        #nombre de parties jouees
 delay = 15                                                      #Pas de temps du jeu (en ms)
 radius = 16                                                     #Rayon du personnage
@@ -29,6 +29,11 @@ x_p2 = 750
 y_p2 = 400
 
 # Paramètre NN
+nb_input = 46
+nb_hidden1 = 60
+nb_hidden2 = 30
+nb_hidden3 = 16
+nb_output = 8
 
 activ=0.5
-mutation_chance = 0.2
+mutation_chance = 0.3

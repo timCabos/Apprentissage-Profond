@@ -15,20 +15,12 @@ background = pygame.image.load('sprites/bg.png')
 p_1 = pygame.image.load('sprites/p_1.png')
 p_2 = pygame.image.load('sprites/p_2.png')
 
-
-#Definition nnet
-nb_input = 46
-nb_hidden1 = 60
-nb_hidden2 = 30
-nb_hidden3 = 16
-nb_output = 8
-
 nb_tank = 5
 nnet_tab=[Nnet(nb_input, nb_hidden1, nb_hidden2, nb_hidden3, nb_output) for i in range(nb_tank)]
 score_tab=[0 for i in range(nb_tank)]
 
 playing_tank = 0
-game_duration = 15000
+game_duration = 2000
 time = 0
 
 print(nnet_tab[0].weight_input_hidden1)
@@ -187,7 +179,7 @@ while game < game_max:
 
     if time > game_duration :
         game += 1
-        score = (life_p1-life_p2)/life_tot * (1 - time/game_duration)
+        score = (life_p1-life_p2)/life_tot * (1 - time/(2*game_duration))
         print(score)
         score_tab[playing_tank]=score
         playing_tank = (playing_tank + 1)
@@ -203,11 +195,14 @@ while game < game_max:
 
     if playing_tank == nb_tank :
         playing_tank = 0
+        print(score_tab)
+        print(nnet_tab)
         good_nn, bad_nn = darwin(nnet_tab, score_tab)
+        print(good_nn)
+        print(bad_nn)
         bad_nn = sort_bad(bad_nn)
         child1 = breed(good_nn[0], good_nn[1])
         child2 = breed(good_nn[0], good_nn[1])
-        nnet_tab = [good_nn[0], good_nn[1], bad_nn[0], child1, child2]
-
+        nnet_tab = [good_nn[0], good_nn[1], bad_nn[0], bad_nn[1], child1]
     pygame.display.update()
 pygame.quit()

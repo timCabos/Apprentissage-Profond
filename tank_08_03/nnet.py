@@ -47,24 +47,30 @@ def darwin(tab, score):                     #Selection function , split list in 
     score[max_1]=0
     max_2=score.index(max(score))
     good_boys=[tab[max_1],tab[max_2]]
-    del tab[max_1:max_2]                    # Delete good ones
+    del(tab[max_1])                    # Delete good ones
+    if max_1 > max_2 :
+        del(tab[max_2])
+    else :
+        del(tab[max_2-1])
     bad_boys=tab
     return good_boys , bad_boys
 
 def breed(nn1, nn2):                            #breeding function , random weights from each neural net selected
-    child = nn1
+    child = Nnet(nb_input, nb_hidden1, nb_hidden2, nb_hidden3, nb_output)
     weights_child = [child.weight_input_hidden1, child.weight_hidden1_hidden2, child.weight_hidden2_hidden3, child.weight_hidden3_output]
+    weights_nn1 = [nn1.weight_input_hidden1, nn1.weight_hidden1_hidden2, nn1.weight_hidden2_hidden3, nn1.weight_hidden3_output]
     weights_nn2 = [nn2.weight_input_hidden1, nn2.weight_hidden1_hidden2, nn2.weight_hidden2_hidden3, nn2.weight_hidden3_output]
     for matrix in range(len(weights_child)):
         for i in range(np.shape(weights_child[matrix])[0]):
             for j in range(np.shape(weights_child[matrix])[1]):
+                weights_child[matrix][i][j] = weights_nn1[matrix][i][j]
                 if random.random() < 0.5:
                     weights_child[matrix][i][j] = weights_nn2[matrix][i][j]
     return child
 
 def sort_bad(bad_boys):
     del bad_boys[random.randint(0,len(bad_boys)-1)]
-    del bad_boys[random.randint(0,len(bad_boys)-1)]
+#    del bad_boys[random.randint(0,len(bad_boys)-1)]
     for i in range(len(bad_boys)):
         bad_boys[i].modify_weights()
     return bad_boys
