@@ -35,5 +35,5 @@ nb_hidden2 = 18
 nb_hidden3 = 13
 nb_output = 8
 
-activ = 0.85
-mutation_chance = 0.1
+activ = 0.7
+mutation_chance = 0.15

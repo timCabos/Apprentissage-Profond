@@ -57,14 +57,14 @@ while game < game_max:
         y_p1 += speed
 
 
-    #if output2[0][0]>activ and x_p2>0:
-    #    x_p2 -= speed
-    #if output2[1][0]>activ and x_p2<window_length - width:
-    #    x_p2 += speed
-    #if output2[2][0]>activ and y_p2>0:
-    #    y_p2 -= speed
-    #if output2[3][0]>activ and y_p2< window_height - height:
-    #    y_p2 += speed
+    if output2[0][0]>activ and x_p2>0:
+        x_p2 -= speed
+    if output2[1][0]>activ and x_p2<window_length - width:
+        x_p2 += speed
+    if output2[2][0]>activ and y_p2>0:
+        y_p2 -= speed
+    if output2[3][0]>activ and y_p2< window_height - height:
+        y_p2 += speed
 
 # Test du tir du joueur 1
 

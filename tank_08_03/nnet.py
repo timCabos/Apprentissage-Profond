@@ -77,16 +77,22 @@ def sort_bad(bad_boys):
 
 def save_nnet(tab,name):
     file=str(name)+".txt"
-    f=open(name,w+)
-    f.write(tab[0].num_input , tab[0].num_hidden_1 , tab[0].num_hidden_2, tab[0].num_hidden_3, tab[0].num_output)
+    f=open(file,"w+")
+    f.write("%d"%tab[0].num_input)
+    f.write("%d"%tab[0].num_hidden_1)
+    f.write("%d"%tab[0].num_hidden_2)
+    f.write("%d"%tab[0].num_hidden_3)
+    f.write("%d"%tab[0].num_output)
     for i in range(len(tab)) :
         f.write("nnet_tab1 %d \n" %i)
-        f.write(tab[i].weight_input_hidden1)
+        f.write(str(tab[i].weight_input_hidden1))
         f.write("\n")
-        f.write(tab[i].weight_hidden1_hidden2)
+        f.write(str(tab[i].weight_hidden1_hidden2))
         f.write("\n")
-        f.write(tab[i].weight_hidden2_hidden3)
+        f.write(str(tab[i].weight_hidden2_hidden3))
         f.write("\n")
-        f.write(tab[i].weight_hidden3_output)
+        f.write(str(tab[i].weight_hidden3_output))
+        f.write("\n")
+        f.write("\n")
         f.write("\n")
     f.close()
