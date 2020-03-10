@@ -78,6 +78,9 @@ while game < game_max:
             bullets_p1[i][2] = y_p1
             bullets_p1[i][3] = 0
             bullets_p1[i][4] = 0
+            distance = (bullets_p1[i][1] - x_p2)**2 + (bullets_p1[i][2] - y_p2)**2
+            if distance_bullets1[i] > distance :
+                distance_bullets1[i] = distance
             if output1[4][0]>activ :
                 bullets_p1[i][3] = -bullet_speed
             if output1[5][0]>activ :
@@ -103,6 +106,9 @@ while game < game_max:
             bullets_p2[i][2] = y_p2
             bullets_p2[i][3] = 0
             bullets_p2[i][4] = 0
+            distance = (bullets_p2[i][1] - x_p1)**2 + (bullets_p2[i][2] - y_p2)**2
+            if distance_bullets2[i] > distance :
+                distance_bullets2[i] = distance
             if output2[4][0]>activ :
                 bullets_p2[i][3] = -bullet_speed
             if output2[5][0]>activ :
@@ -127,6 +133,9 @@ while game < game_max:
         if bullets_p1[i][0]:
             bullets_p1[i][1] += bullets_p1[i][3]
             bullets_p1[i][2] += bullets_p1[i][4]
+            distance = ((bullets_p1[i][1] - x_p2)**2 + (bullets_p1[i][2] - y_p2)**2)
+            if distance_bullets1[i] > distance :
+                distance_bullets1[i] = distance
             if abs(bullets_p1[i][1] - x_p2) < width and abs(bullets_p1[i][2] - y_p2) < height :
                 bullets_p1[i] = [0 for j in range(5)]
                 life_p2 -= 1
@@ -137,6 +146,7 @@ while game < game_max:
                     score_tab1[playing_tank]=score
                     score_tab2[playing_tank]=-score
                     playing_tank = (playing_tank + 1)
+                    score_bullet = 0
                     life_p1 = life_tot
                     life_p2 = life_tot
                     x_p1 = 200
@@ -149,12 +159,16 @@ while game < game_max:
 
             pygame.draw.circle(window, (255, 0, 0), (bullets_p1[i][1],bullets_p1[i][2]), bullet_radius, 0)
             if bullets_p1[i][1] > 800 or bullets_p1[i][1] < 0 or bullets_p1[i][2] > 800 or bullets_p1[i][2] < 0 :
+                score_bullet += 2**(-((5*distance_bullets1[i])**2))/100
                 bullets_p1[i][0] = False
 
     for i in range(max_bullet):
         if bullets_p2[i][0]:
             bullets_p2[i][1] += bullets_p2[i][3]
             bullets_p2[i][2] += bullets_p2[i][4]
+            distance = ((bullets_p2[i][1] - x_p1)**2 + (bullets_p2[i][2] - y_p1)**2)
+            if distance_bullets2[i] > distance :
+                distance_bullets2[i] = distance
             if abs(bullets_p2[i][1] - x_p1) < width and abs(bullets_p2[i][2] - y_p1) < height :
                 bullets_p2[i] = [0 for j in range(5)]
                 life_p1 -= 1
@@ -164,6 +178,7 @@ while game < game_max:
                     print(score)
                     score_tab1[playing_tank]=score
                     score_tab2[playing_tank]=-score
+                    score_bullet = 0
                     playing_tank = (playing_tank + 1)
                     life_p1 = life_tot
                     life_p2 = life_tot
@@ -177,14 +192,16 @@ while game < game_max:
 
             pygame.draw.circle(window, (0, 255, 0), (bullets_p2[i][1],bullets_p2[i][2]), bullet_radius, 0)
             if bullets_p2[i][1] > 800 or bullets_p2[i][1] < 0 or bullets_p2[i][2] > 800 or bullets_p2[i][2] < 0 :
+                score_bullet -= 2**(-((5*distance_bullets2[i])**2))/100
                 bullets_p2[i][0] = False
 
     if time > game_duration :
         game += 1
-        score = (life_p1-life_p2)/life_tot * (1 - time/(2*game_duration))
+        score = (life_p1-life_p2)/life_tot * (1 - time/(2*game_duration)) + score_bullet
         print(score)
         score_tab1[playing_tank]=score
         score_tab2[playing_tank]=-score
+        score_bullet = 0
         playing_tank = (playing_tank + 1)
         life_p1 = life_tot
         life_p2 = life_tot
@@ -203,15 +220,18 @@ while game < game_max:
         print(score_tab1)
         good_nn1, bad_nn1 = darwin(nnet_tab1, score_tab1)
         good_nn2, bad_nn2 = darwin(nnet_tab2, score_tab2)
-        bad_nn1 = sort_bad(bad_nn1)
-        bad_nn2 = sort_bad(bad_nn2)
         child1 = breed(good_nn1[0], good_nn1[1])
         child2 = breed(good_nn2[0], good_nn2[1])
-        nnet_tab1 = [good_nn1[0], good_nn1[1], bad_nn1[0], bad_nn1[1], child1]
-        nnet_tab2 = [good_nn2[0], good_nn2[1], bad_nn2[0], bad_nn2[1], child2]
+        if max(score_tab1) > max(score_tab2) :
+            nnet_tab1 = [good_nn1[0], good_nn1[0], good_nn1[1], good_nn1[1], child1]
+            bad_nn2 = sort_bad(bad_nn2)
+            nnet_tab2 = [good_nn2[0], good_nn2[1], bad_nn2[0], bad_nn2[1], child2]
+        else :
+            nnet_tab2 = [good_nn2[0], good_nn2[0], good_nn2[1], good_nn2[1], child2]
+            bad_nn1 = sort_bad(bad_nn1)
+            nnet_tab1 = [good_nn1[0], good_nn1[1], bad_nn1[0], bad_nn1[1], child1]
         random.shuffle(nnet_tab1)
-
-
+        random.shuffle(nnet_tab2)
 
     pygame.display.update()
 pygame.quit()

@@ -16,11 +16,14 @@ cooldown_p2 = 0
 max_bullet = 4                                                #Nombre maximum de tirs
 bullets_p1 = [[0 for i in range(5)] for i in range(max_bullet)]  #Tableau des tirs emis : (Exist?, x, y, x_speed, y_speed)
 bullets_p2 = [[0 for i in range(5)] for i in range(max_bullet)]
+distance_bullets1 = [1 for i in range(max_bullet)]
+distance_bullets2 = [1 for i in range(max_bullet)]
 bullet_speed = 40                                               #Vitesse des tirs
 bullet_radius = 4
 life_tot = 3
 life_p1 = life_tot
 life_p2 = life_tot
+score_bullet = 0
 
 #Position initiale des joueurs
 x_p1 = 200
@@ -35,5 +38,5 @@ nb_hidden2 = 18
 nb_hidden3 = 13
 nb_output = 8
 
-activ = 0.7
-mutation_chance = 0.15
+activ = 0.6
+mutation_chance = 0.1
