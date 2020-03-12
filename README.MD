@@ -1,5 +1,7 @@
 apprentissage profond
 
+info pratiques sur architectures : https://stats.stackexchange.com/questions/182734/what-is-the-difference-between-a-neural-network-and-a-deep-neural-network-and-w
+
 Bibliographie :
 
 Wiki sur neuroevolution :
